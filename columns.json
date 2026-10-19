@@ -1,0 +1,12 @@
+{
+  "id": "ID",
+  "codigo": "Código",
+  "cliente": "Cliente",
+  "cidade": "Cidade",
+  "data": "Data",
+  "quantidade": "Quantidade",
+  "preco": "Preço Unitário",
+  "desconto": "Desconto (%)",
+  "ativo": "Ativo",
+  "categoria": "Categoria"
+}

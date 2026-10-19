@@ -1,0 +1,206 @@
+[
+  {
+    "method": "Python (urllib+json) -> tabela via COM",
+    "rows": 1000,
+    "runs": [
+      0.12497619999339804,
+      0.14325169997755438,
+      0.1217354999971576
+    ]
+  },
+  {
+    "method": "Python (urllib+json) -> tabela via COM",
+    "rows": 10000,
+    "runs": [
+      1.1929737000027671,
+      0.9915361999883316,
+      0.9159040999948047
+    ]
+  },
+  {
+    "method": "Python (urllib+json) -> tabela via COM",
+    "rows": 100000,
+    "runs": [
+      9.464129199972376,
+      10.147881099954247,
+      10.979521000001114
+    ]
+  },
+  {
+    "method": "Python (urllib+json) -> tabela via COM",
+    "rows": "100000->1000",
+    "runs": [
+      0.8148033000179566
+    ]
+  },
+  {
+    "method": "VBA parser pr\u00f3prio -> tabela",
+    "rows": 1000,
+    "runs": [
+      0.6421768000000156,
+      0.6839605999994092,
+      0.4990051999920979
+    ]
+  },
+  {
+    "method": "VBA parser pr\u00f3prio -> tabela",
+    "rows": 10000,
+    "runs": [
+      3.8806135000195354,
+      2.1259846999892034,
+      1.1257212999626063
+    ]
+  },
+  {
+    "method": "VBA parser pr\u00f3prio -> tabela",
+    "rows": 100000,
+    "runs": [
+      10.441951800021343,
+      11.08884720003698,
+      11.172936999995727
+    ]
+  },
+  {
+    "method": "VBA parser pr\u00f3prio -> tabela",
+    "rows": "100000->1000",
+    "runs": [
+      0.24154730001464486
+    ]
+  },
+  {
+    "method": "VBA + VBA-JSON -> tabela",
+    "rows": 1000,
+    "runs": [
+      0.3495798999792896,
+      0.2812988999648951,
+      0.28719569998793304
+    ]
+  },
+  {
+    "method": "VBA + VBA-JSON -> tabela",
+    "rows": 10000,
+    "runs": [
+      2.6484291999950074,
+      2.6406468999921344,
+      2.8548277000081725
+    ]
+  },
+  {
+    "method": "VBA + VBA-JSON -> tabela",
+    "rows": 100000,
+    "runs": [
+      27.777954200049862,
+      30.45112139999401,
+      28.036950100038666
+    ]
+  },
+  {
+    "method": "VBA + VBA-JSON -> tabela",
+    "rows": "100000->1000",
+    "runs": [
+      0.38123880000784993
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) -> tabela",
+    "rows": 1000,
+    "runs": [
+      0.2046150999958627,
+      0.08274030004395172,
+      0.08645900001283735
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) -> tabela",
+    "rows": 10000,
+    "runs": [
+      0.7800069999648258,
+      0.840575699985493,
+      0.7986993999802507
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) -> tabela",
+    "rows": 100000,
+    "runs": [
+      8.398968299967237,
+      10.581090199993923,
+      9.450922299991362
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) -> tabela",
+    "rows": "100000->1000",
+    "runs": [
+      0.18628570000873879
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRecords",
+    "rows": 1000,
+    "runs": [
+      0.37525989999994636,
+      0.09442749997833744,
+      0.10072009998839349
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRecords",
+    "rows": 10000,
+    "runs": [
+      0.45057400001678616,
+      0.3566544999484904,
+      0.3583826000103727
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRecords",
+    "rows": 100000,
+    "runs": [
+      3.560072600026615,
+      4.488001499965321,
+      4.44699159997981
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRecords",
+    "rows": "100000->1000",
+    "runs": [
+      0.2534021000028588
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRows",
+    "rows": 1000,
+    "runs": [
+      0.09743869997328147,
+      0.09732199995778501,
+      0.20598299999255687
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRows",
+    "rows": 10000,
+    "runs": [
+      0.43448609998449683,
+      0.3480814999784343,
+      0.36940889997640625
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRows",
+    "rows": 100000,
+    "runs": [
+      4.108796300017275,
+      3.3643391000223346,
+      3.544213299988769
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRows",
+    "rows": "100000->1000",
+    "runs": [
+      0.23434130003442988
+    ]
+  }
+]

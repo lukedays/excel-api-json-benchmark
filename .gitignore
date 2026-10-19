@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+csaddin/bin/
+csaddin/obj/
+~$*
+smoke.json

@@ -1,0 +1,104 @@
+[
+  {
+    "method": "Add-in C# (Excel-DNA) COM -> tabela",
+    "rows": 1000,
+    "runs": [
+      0.22371849999763072,
+      0.08204810001188889,
+      0.07652359997155145
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) COM -> tabela",
+    "rows": 10000,
+    "runs": [
+      0.9970747000188567,
+      0.8016143999993801,
+      0.789489799994044
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) COM -> tabela",
+    "rows": 100000,
+    "runs": [
+      7.77190959994914,
+      8.518667600001208,
+      7.840662200003862
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) COM -> tabela",
+    "rows": "100000->1000",
+    "runs": [
+      0.21585630002664402
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) C API -> tabela",
+    "rows": 1000,
+    "runs": [
+      0.0763435999979265,
+      0.12573720002546906,
+      0.06941789999837056
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) C API -> tabela",
+    "rows": 10000,
+    "runs": [
+      0.7052339999936521,
+      0.7221770000178367,
+      0.671570000005886
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) C API -> tabela",
+    "rows": 100000,
+    "runs": [
+      6.9308065000223,
+      6.762812000000849,
+      6.526264299987815
+    ]
+  },
+  {
+    "method": "Add-in C# (Excel-DNA) C API -> tabela",
+    "rows": "100000->1000",
+    "runs": [
+      0.2060238000121899
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRows",
+    "rows": 1000,
+    "runs": [
+      0.13813249999657273,
+      0.34716479998314753,
+      0.08353219996206462
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRows",
+    "rows": 10000,
+    "runs": [
+      0.38023069995688275,
+      0.3770039000082761,
+      0.35036839998792857
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRows",
+    "rows": 100000,
+    "runs": [
+      2.8961189999827184,
+      4.174546199967153,
+      3.971112900006119
+    ]
+  },
+  {
+    "method": "Power Query Table.FromRows",
+    "rows": "100000->1000",
+    "runs": [
+      0.39071260002674535
+    ]
+  }
+]
