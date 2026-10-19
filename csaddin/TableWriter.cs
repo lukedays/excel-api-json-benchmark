@@ -3,14 +3,14 @@ using Range = Microsoft.Office.Interop.Excel.Range;
 
 namespace CsAddIn;
 
-/// <summary>Grava cabeçalhos e corpo numa tabela nomeada, crescendo ou encolhendo para caber exatamente.</summary>
+/// <summary>Dimensiona uma tabela nomeada para caber exatamente nos dados, crescendo ou encolhendo.</summary>
 public static class TableWriter
 {
-    public static void Write(Worksheet sheet, string tableName, object?[] headers, object?[,] body, Action<Range, object?[,]> writeBody)
+    /// <param name="writeBody">Recebe o intervalo do corpo (rowCount x headers.Length) e grava os valores.</param>
+    public static void Write(Worksheet sheet, string tableName, object[] headers, int rowCount, Action<Range> writeBody)
     {
-        var rowCount = body.GetLength(0);
         var colCount = headers.Length;
-        var headerRow = new object?[1, colCount];
+        var headerRow = new object[1, colCount];
         for (var c = 0; c < colCount; c++)
         {
             headerRow[0, c] = headers[c];
@@ -26,10 +26,11 @@ public static class TableWriter
             ((Range)newRange.Rows[1]).Value2 = headerRow;
             if (rowCount > 0)
             {
-                writeBody(newRange.Offset[1, 0].Resize[rowCount, colCount], body);
+                writeBody(newRange.Offset[1, 0].Resize[rowCount, colCount]);
             }
             table = sheet.ListObjects.Add(XlListObjectSourceType.xlSrcRange, newRange, Type.Missing, XlYesNoGuess.xlYes);
             table.Name = tableName;
+            PhaseTimer.Mark("create");
             return;
         }
 
@@ -37,25 +38,30 @@ public static class TableWriter
         var oldRange = table.Range;
         int oldRows = oldRange.Rows.Count, oldCols = oldRange.Columns.Count;
         table.Resize(newRange);
+        PhaseTimer.Mark("resize");
         table.HeaderRowRange.Value2 = headerRow;
+        PhaseTimer.Mark("header");
         if (rowCount == 0)
         {
             table.DataBodyRange.ClearContents();
         }
         else
         {
-            writeBody(table.DataBodyRange, body);
+            writeBody(table.DataBodyRange);
         }
+        PhaseTimer.Mark("body");
 
+        // Fora da tabela sobram só valores; basta apagá-los.
         var newRows = newRange.Rows.Count;
         if (oldRows > newRows)
         {
-            oldRange.Offset[newRows, 0].Resize[oldRows - newRows, oldCols].Clear();
+            BodyWriter.Clear(oldRange.Offset[newRows, 0].Resize[oldRows - newRows, oldCols]);
         }
         if (oldCols > colCount)
         {
-            oldRange.Offset[0, colCount].Resize[oldRows, oldCols - colCount].Clear();
+            BodyWriter.Clear(oldRange.Offset[0, colCount].Resize[oldRows, oldCols - colCount]);
         }
+        PhaseTimer.Mark("clear");
     }
 
     private static ListObject? FindTable(Worksheet sheet, string tableName)

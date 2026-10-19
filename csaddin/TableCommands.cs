@@ -1,35 +1,37 @@
 using ExcelDna.Integration;
 using Microsoft.Office.Interop.Excel;
-using Range = Microsoft.Office.Interop.Excel.Range;
 
 namespace CsAddIn;
 
 /// <summary>Macro exposta ao Excel: baixa a tabela JSON da API e grava numa tabela nomeada.</summary>
 public static class TableCommands
 {
-    private static readonly HttpClient Http = new();
+    private static readonly HttpClient Http = new(new SocketsHttpHandler
+    {
+        AutomaticDecompression = System.Net.DecompressionMethods.All,
+    });
 
     /// <param name="friendlyNames">"chave=Rótulo|chave=Rótulo"; chaves sem rótulo mantêm o nome original.</param>
     [ExcelCommand(Name = "CsLoadTable")]
-    public static void LoadTable(string url, string sheetName, string tableName, string friendlyNames) =>
-        Load(url, sheetName, tableName, friendlyNames, BodyWriters.Com);
-
-    /// <summary>Mesma carga, mas o corpo vai pela C API do Excel em vez de COM.</summary>
-    [ExcelCommand(Name = "CsLoadTableCApi")]
-    public static void LoadTableCApi(string url, string sheetName, string tableName, string friendlyNames) =>
-        Load(url, sheetName, tableName, friendlyNames, BodyWriters.CApi);
-
-    private static void Load(string url, string sheetName, string tableName, string friendlyNames, Action<Range, object?[,]> writeBody)
+    public static void LoadTable(string url, string sheetName, string tableName, string friendlyNames)
     {
+        PhaseTimer.Start();
         var json = Http.GetByteArrayAsync(url).GetAwaiter().GetResult();
-        var (keys, body) = JsonTableParser.Parse(json);
+        PhaseTimer.Mark("http");
+        var parsed = JsonTableParser.Parse(json);
+        PhaseTimer.Mark("split");
         var labels = ParseFriendlyNames(friendlyNames);
-        var headers = keys.Select(k => (object?)labels.GetValueOrDefault(k, k)).ToArray();
+        var headers = parsed.Keys.Select(k => (object)labels.GetValueOrDefault(k, k)).ToArray();
 
         var app = (Application)ExcelDnaUtil.Application;
         var sheet = (Worksheet)app.ActiveWorkbook.Worksheets[sheetName];
-        TableWriter.Write(sheet, tableName, headers, body, writeBody);
+        TableWriter.Write(sheet, tableName, headers, parsed.RowCount, body => BodyWriter.Write(body, parsed));
+        PhaseTimer.Stop();
     }
+
+    /// <summary>Tempo de cada fase da última carga, para diagnóstico.</summary>
+    [ExcelFunction(Name = "CsLastTimings")]
+    public static string LastTimings() => PhaseTimer.LastReport;
 
     private static Dictionary<string, string> ParseFriendlyNames(string friendlyNames) =>
         friendlyNames

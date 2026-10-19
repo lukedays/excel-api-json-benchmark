@@ -21,7 +21,7 @@ API = "http://localhost:8765/table?rows={rows}&run={run}"
 RUN_IDS = itertools.count()  # parâmetro único por chamada, para nenhum método se beneficiar de cache HTTP
 SIZES = [int(s) for s in os.environ.get("BENCH_SIZES", "1000,10000,100000").split(",")]
 RUNS = int(os.environ.get("BENCH_RUNS", "3"))
-METHODS = set(os.environ.get("BENCH_METHODS", "py,vbaflat,vbajson,cs,cscapi,pqrecords,pqrows").split(","))
+METHODS = set(os.environ.get("BENCH_METHODS", "py,vbaflat,vbajson,cs,pqrecords,pqrows").split(","))
 OUTPUT_FILE = os.environ.get("BENCH_OUT", "results.json")
 ROOT = Path(__file__).parent
 CS_ADDIN = ROOT / "csaddin" / "bin" / "Release" / "net10.0-windows" / "CsAddIn-AddIn64.xll"
@@ -107,8 +107,11 @@ def _run_and_quit(work):
 
 
 def _wait_for_exit(pid):
-    process = win32api.OpenProcess(win32con.SYNCHRONIZE, False, pid)
-    win32event.WaitForSingleObject(process, 30000)
+    """Espera o Excel sair; se não sair (add-in .NET segurando referências COM), encerra o processo."""
+    process = win32api.OpenProcess(win32con.SYNCHRONIZE | win32con.PROCESS_TERMINATE, False, pid)
+    if win32event.WaitForSingleObject(process, 15000) == win32event.WAIT_TIMEOUT:
+        win32api.TerminateProcess(process, 1)
+        win32event.WaitForSingleObject(process, 5000)
     win32api.CloseHandle(process)
 
 
@@ -273,8 +276,7 @@ def run_methods(excel):
         ("py", "Python (urllib+json) -> tabela via COM", "py", load_python_com),
         ("vbaflat", "VBA parser próprio -> tabela", "vba", load_vba("LoadWithFlatParser")),
         ("vbajson", "VBA + VBA-JSON -> tabela", "vba", load_vba("LoadWithVbaJson")),
-        ("cs", "Add-in C# (Excel-DNA) COM -> tabela", "cs", load_csharp_addin("CsLoadTable")),
-        ("cscapi", "Add-in C# (Excel-DNA) C API -> tabela", "cs", load_csharp_addin("CsLoadTableCApi")),
+        ("cs", "Add-in C# (Excel-DNA) -> tabela", "cs", load_csharp_addin("CsLoadTable")),
     ]
     for key, label, sheet_name, loader in methods:
         if key in METHODS:
